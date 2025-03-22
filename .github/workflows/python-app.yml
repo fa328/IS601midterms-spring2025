@@ -1,0 +1,53 @@
+# I am using the code the professor provided for my project so the code is pushed to Github Action.
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Python application
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+        cache: "pip"
+
+    - name: Install dependencies in a virtual environment
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+        python -m pip install --upgrade pip
+        pip install flake8 pytest pandas
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Verify installed packages
+      run: |
+        source venv/bin/activate
+        pip list
+
+    - name: Test pandas import
+      run: |
+        source venv/bin/activate
+        python -c "import pandas; print(pandas.__version__)"
+
+    - name: Run linting and tests
+      run: |
+        source venv/bin/activate
+        flake8 .
+        pytest
+  
