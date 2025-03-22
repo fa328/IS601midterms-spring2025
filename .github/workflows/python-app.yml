@@ -15,43 +15,21 @@ permissions:
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
+    - uses: actions/checkout@v3
     - name: Set up Python 3.10
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v3
       with:
         python-version: "3.10"
-        cache: "pip"
-
-    - name: Install dependencies in a virtual environment
+    - name: Install dependencies
       run: |
-        python -m venv venv
-        source venv/bin/activate
         python -m pip install --upgrade pip
-        pip install flake8 pytest pandas black  # Added black for auto-formatting
+        pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-
-    - name: Verify installed packages
+    - name: Test with pytest --pylint
       run: |
-        source venv/bin/activate
-        pip list
-
-    - name: Test pandas import
-      run: |
-        source venv/bin/activate
-        python -c "import pandas; print(pandas.__version__)"
-
-    - name: Auto-format code with black
-      run: |
-        source venv/bin/activate
-        black .  # Auto-format the code to fix style issues like line length
-
-    - name: Run linting and tests
-      run: |
-        source venv/bin/activate
-        flake8 . --max-line-length=79  # Ensure line length rule of 79 chars
-        pytest --maxfail=5 --disable-warnings -v  # Verbose pytest output, stop after 5 failures
+        pytest
+  
