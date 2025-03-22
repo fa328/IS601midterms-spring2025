@@ -1,3 +1,4 @@
+
 '''
     Calculations class performs basic operation using a passed function.
     It add two number using an add function, which passed to the calculation class as the operation.

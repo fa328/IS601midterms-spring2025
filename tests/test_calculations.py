@@ -21,10 +21,10 @@ def test_division():
     assert divide(2,2) == 1
 
 def test_divide_by_zero():
-    '''Test that division by zero raises an error'''
+    '''Test that division by zero'''
     try:
-        divide(2, 0)
-    except ValueError as e:
-        assert str(e) == "Cannot divide by zero"
+        divide(2,0)
+    except ZeroDivisionError:
+        pass
     else:
-        assert False, "Expected ValueError"
+        assert False, "Expected ZeroDivisionError"

@@ -1,3 +1,4 @@
+
 '''
     This code sets up logging, loads environment variables, and configures the command handler.
 '''
